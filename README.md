@@ -76,12 +76,19 @@ Use my account
 In IAM Console, created a user with console access.
 
 - Create name, password, user access
+
   ![IAM User Creation](images/prerequisites/image1.png)
+
 - Attach policies directly: PowerUserAccess and IAMFullAccess
+
   ![IAM User Creation](images/prerequisites/image2.png)
+
 - Note Console sign-in URL for login:
+
   ![IAM User Creation](images/prerequisites/image3.png)
+
 - Login the user
+
   ![IAM User Creation](images/prerequisites/image4.png)
 
 ### 2.3. Deploy some resources via AWS CloudFormation
@@ -107,9 +114,9 @@ This option uses AWS CloudShell to run commands using the AWS CLI.
 
 - Launch AWS CloudShell from the console for CLI access.
 
-![CloudShell Launch](images\lab1\image1.png)
+![CloudShell Launch](images/lab1/image1.png)
 
-![CLI Commands](images\lab1\image2.png)
+![CLI Commands](images/lab1/image2.png)
 
 - Run commands to copy partitioned data from public S3 to my bucket:
 
@@ -122,7 +129,7 @@ text
 
 - Verified data in S3 Console: Navigated to sdl-immersion-day-[account]/raw/ and confirmed folders/partitions.
 
-![S3 Verification](images\lab1\image3.png)
+![S3 Verification](images/lab1/image3.png)
 
 **Key Learnings:** Batch ingestion via AWS CLI/S3 efficiently populates data lakes from sources like Systems of Record (SoR) or external datasets. Partitioning (e.g., year/month/day/hour) optimizes queries; S3's scalability handles petabyte volumes securely.
 
@@ -135,41 +142,41 @@ This Lab 2 helps cataloge raw data and built ETL pipelines using AWS Glue, explo
 #### 4.1.1. Create crawler to auto discover schema of your data in S3
 
 - In Glue Console, created Crawler "sdl-demo-crawler"
-  ![Crawler Creation](images\lab2\image1.png)
-  ![Crawler Creation](images\lab2\image2.png)
+  ![Crawler Creation](images/lab2/image1.png)
+  ![Crawler Creation](images/lab2/image2.png)
 - Added S3 data source (sdl-immersion-day-[account]/raw/), used SDL-GlueRole, output to new database "sdl-demo-data" (on-demand schedule).
-  ![Crawler Data Source](images\lab2\image3.png)
+  ![Crawler Data Source](images/lab2/image3.png)
 - Configure security settings: Select the Existing IAM role as SDL-GlueRole
-  ![Select IAM](images\lab2\image4.png)
+  ![Select IAM](images/lab2/image4.png)
 - Set output and scheduling:
 
   - Add database
-    ![Add database](images\lab2\image5.png)
+    ![Add database](images/lab2/image5.png)
   - Name database and create
-    ![Add database](images\lab2\image6.png)
-    ![Add database](images\lab2\image7.png)
+    ![Add database](images/lab2/image6.png)
+    ![Add database](images/lab2/image7.png)
   - Back to Set output and scheduling, refresh to load the new database
-    ![Set output and scheduling](images\lab2\image8.png)
+    ![Set output and scheduling](images/lab2/image8.png)
   - Review and Run Crawler
 
 - Ran the crawler (2 minutes) and verified table "raw" under Tables, showing JSON schema, partitions, and metadata.
-  ![Crawler Run](images\lab2\image9.png)
+  ![Crawler Run](images/lab2/image9.png)
 
 #### 4.1.2. Edit the Metadata Schema
 
 - Verify table "raw" under database and its schema (Check if year, month, day, and hour partition columns are in the table or the indexes are correct)
-  ![Tables](images\lab2\image11.png)
-  ![Tables](images\lab2\image12.png)
-  ![Tables](images\lab2\image13.png)
+  ![Tables](images/lab2/image11.png)
+  ![Tables](images/lab2/image12.png)
+  ![Tables](images/lab2/image13.png)
 - Edited schema: Actions > Edit schema
-  ![Schema Edit](images\lab2\image14.png)
+  ![Schema Edit](images/lab2/image14.png)
 - To rename partition columns, the old indexes should be deleted first.
-  ![Schema Edit](images\lab2\image15.png)
+  ![Schema Edit](images/lab2/image15.png)
 - Select the partition column, use the Edit button and modify the name of the column and partition
-  ![Schema Edit](images\lab2\image16.png)
+  ![Schema Edit](images/lab2/image16.png)
 - Repeat with all columns, save as new table and check the table again
-  ![Schema Edit](images\lab2\image17.png)
-  ![Schema Edit](images\lab2\image18.png)
+  ![Schema Edit](images/lab2/image17.png)
+  ![Schema Edit](images/lab2/image18.png)
 
 **Key Learnings:** Glue Crawlers automate schema discovery, populating the Data Catalog for queryable metadata without data movement. Tables define schemas/partitions; editing ensures Hive-compatible naming for efficient partitioning.
 
@@ -185,13 +192,13 @@ After adding Amazon S3 data to Glue catalog, it can easily be queried from servi
 
 - Created S3 folder for scripts:
   - In S3, choose data lake bucket and add /scripts/ to sdl-immersion-day-[account]/.
-    ![Scripts Folder](images\lab2\image19.png)
-    ![Scripts Folder](images\lab2\image20.png)
+    ![Scripts Folder](images/lab2/image19.png)
+    ![Scripts Folder](images/lab2/image20.png)
 - Authoring the job in Glue Studio
 
   - In Glue Studio, choose ETL Jobs and Create Visual ETL job
-    ![Job Properties](images\lab2\image21.png)
-    ![Job Properties](images\lab2\image22.png)
+    ![Job Properties](images/lab2/image21.png)
+    ![Job Properties](images/lab2/image22.png)
   - Job Detail:
     - Name: transform-json-to-parquet
     - IAM Role: Select SDL-GlueRole
@@ -203,56 +210,56 @@ After adding Amazon S3 data to Glue catalog, it can easily be queried from servi
       - Script filename: transform-json-to-parquet.py
       - Script path: s3://sdl-immersion-day-{aws-account-number}/scripts/
 
-  ![Job Properties](images\lab2\image23.png)
+  ![Job Properties](images/lab2/image23.png)
 
-  ![Job Properties](images\lab2\image24.png)
+  ![Job Properties](images/lab2/image24.png)
 
 - Design transformation logic:
 
   - Switch to the Visual tab
   - In the Nodes pane, Sources tab, select Amazon S3.
-    ![Visual Nodes](images\lab2\image25.png)
+    ![Visual Nodes](images/lab2/image25.png)
   - In the Nodes pane, Target tab, select Amazon S3.
-    ![Visual Nodes](images\lab2\image26.png)
+    ![Visual Nodes](images/lab2/image26.png)
   - Configure the node properties:
     - Select Data Catalog table as S3 source type
     - Choose sdl-demo-data for Database
     - Choose raw for Table
-      ![Visual Nodes](images\lab2\image27.png)
+      ![Visual Nodes](images/lab2/image27.png)
     - For the Format, choose Parquet
     - For the Compression Type, choose Snappy
     - For the S3 Target Location, choose the data lake bucket and prefix it with compressed-parquet/, so it looks like s3://sdl-immersion-day-{aws-account-number}/compressed-parquet/
     - Keep the rest to the defaults
-      ![Visual Nodes](images\lab2\image28.png)
+      ![Visual Nodes](images/lab2/image28.png)
   - Finally, add some transformation logic:
 
     - Choose the Change Schema node from the Nodes pane.
-      ![Visual Nodes](images\lab2\image29.png)
+      ![Visual Nodes](images/lab2/image29.png)
     - In the configuration of the newly added transformation node, set the Node parents to the source S3 bucket node.
     - Mark the color column to Drop
     - Rename datesoldsince to date_start
     - Rename datesolduntil to date_until
-      ![Visual Nodes](images\lab2\image30.png)
+      ![Visual Nodes](images/lab2/image30.png)
     - Make sure that target node is populated with the changed schema. Choose the target node and change the Node parents to contain only the Change schema node.
-      ![Visual Nodes](images\lab2\image31.png)
+      ![Visual Nodes](images/lab2/image31.png)
 
   - Save and review generated PySpark script in Script tab.
-    ![Generated Script](images\lab2\image32.png)
+    ![Generated Script](images/lab2/image32.png)
 
 #### 4.2.2. Run Transformation Script
 
 - In the Glue Studio editor, choose Run on the top right of the screen.
-  ![Job Run](images\lab2\image33.png)
+  ![Job Run](images/lab2/image33.png)
 
 #### 4.2.3. Monitor and review Job execution
 
 - Navigate to the Runs tab
 - Wait for Run status: Starting -> Running -> Succeeded
-  ![Job Run](images\lab2\image34.png)
+  ![Job Run](images/lab2/image34.png)
 - Open the Amazon S3 Console and verify the transformed files are now in your Amazon S3 bucket under the path s3://sdl-immersion-day-{aws-account-number}/compressed-parquet/
-  ![Job Run](images\lab2\image35.png)
+  ![Job Run](images/lab2/image35.png)
 - Return to the Monitoring tab in the AWS Glue Studio Console and scroll down to the Run details. Review the Metrics section at the bottom.
-  ![Job Run](images\lab2\image36.png)
+  ![Job Run](images/lab2/image36.png)
 
 **Key Learnings:** Glue Studio's no-code interface generates scalable Spark ETL code for transformations. Serverless execution handles infrastructure; metrics aid tuning for performance/cost.
 
@@ -270,11 +277,11 @@ This session explores a more recent feature of AWS Glue, Interactive sessions:
 - This section uses a Jupyter Notebook within AWS Glue Studio for some interactive development and testing of ETL scripts.
 - Download the following [Jupyter notebook](https://static.us-east-1.prod.workshops.aws/public/57c3164a-dfbf-4d43-a246-79b2ceb70231/static/Lab%202.3%20-%20Advanced%20Data%20Preparation.ipynb)
 - Navigate to the [Jobs within AWS Glue Studio](https://console.aws.amazon.com/gluestudio/home#/jobs).
-  ![Jobs within AWS Glue Studio](images\lab2\image36-2.jpg)
+  ![Jobs within AWS Glue Studio](images/lab2/image36-2.jpg)
 - Uploaded Jupyter notebook downloaded to Glue Studio (Notebook type, SDL-GlueRole)
-  ![Jobs within AWS Glue Studio](images\lab2\image37.png)
+  ![Jobs within AWS Glue Studio](images/lab2/image37.png)
 - Check the content and rename to "Advanced Data Preparation."
-  ![Notebook Upload](images\lab2\image38.png)
+  ![Notebook Upload](images/lab2/image38.png)
 
 **Run Notebook**
 
@@ -288,43 +295,43 @@ The notebook contains further instructions and steps:
 - Write the transformed output back to Amazon S3
 
 Notebook contents #1:
-![Notebook Cell 1](images\lab2\image39.png)
+![Notebook Cell 1](images/lab2/image39.png)
 
 Notebook contents #2:
-![Notebook Cell 2](images\lab2\image40.png)
+![Notebook Cell 2](images/lab2/image40.png)
 
 Notebook contents #3:
-![Notebook Cell 3](images\lab2\image41.png)
+![Notebook Cell 3](images/lab2/image41.png)
 
 Notebook contents #4:
-![Notebook Cell 4](images\lab2\image42.png)
+![Notebook Cell 4](images/lab2/image42.png)
 
 Notebook contents #5:
-![Notebook Cell 5](images\lab2\image43.png)
+![Notebook Cell 5](images/lab2/image43.png)
 
 Notebook contents #6 and #7:
-![Notebook Cell 6-7](images\lab2\image44.png)
+![Notebook Cell 6-7](images/lab2/image44.png)
 
 Output Verification:
 
 - Folder in S3
-  ![Output Verification](images\lab2\image45.png)
+  ![Output Verification](images/lab2/image45.png)
 
 - Data partitioned by department:
-  ![Output Verification](images\lab2\image46.png)
+  ![Output Verification](images/lab2/image46.png)
 
 #### 4.3.2. Automating ETL Tasks with Triggers
 
 In this section, a brief example of some the ETL automation capabilities by AWS Glue is provided.
 
 - Navigate to [Trigger in AWS Glue](https://console.aws.amazon.com/glue/home#etl:tab=triggers).
-  ![Trigger Setup](images\lab2\image47.png)
+  ![Trigger Setup](images/lab2/image47.png)
 - Add a trigger that runs the ETL job daily.
-  ![Trigger Setup](images\lab2\image48.png)
+  ![Trigger Setup](images/lab2/image48.png)
 - Select target.
-  ![Trigger Setup](images\lab2\image49.png)
+  ![Trigger Setup](images/lab2/image49.png)
 - Finally review the trigger and Create it.
-  ![Trigger Setup](images\lab2\image50.png)
+  ![Trigger Setup](images/lab2/image50.png)
 
 **Key Learnings:** Interactive Sessions enable REPL-style development for complex ETL (e.g., PySpark joins/enrichments) without clusters. Notebooks integrate with IDEs; triggers automate workflows, supporting event-driven or scheduled processing.
 
@@ -333,31 +340,31 @@ In this section, a brief example of some the ETL automation capabilities by AWS 
 This session shows how to query the GDELT dataset (large and public) with Athena for analysis, focusing on SQL over large-scale data.
 
 - GDELT Open Dataset: The Global Database of Events, Language and Tone (GDELT) Project
-  ![GDELT](images\lab3\image1.png)
+  ![GDELT](images/lab3/image1.png)
 
 ### 5.1. Lab 3.1: SQL Analytics on a Large Scale Open Dataset
 
 #### 5.1.1. Create Glue DB for GDELT Schema using Athena HIVE DDL
 
 - In Athena Console, choose the Query your data with Trino SQL option , and Launch query editor.
-  ![Athena Settings](images\lab3\image2.png)
+  ![Athena Settings](images/lab3/image2.png)
 - Edit settings
-  ![Athena Settings](images\lab3\image3.png)
+  ![Athena Settings](images/lab3/image3.png)
 - Set query results to s3://sdl-immersion-day-[account]/athena-results/, launched editor (Trino SQL).
-  ![Athena Settings](images\lab3\image4.png)
-  ![Athena Settings](images\lab3\image5.png)
+  ![Athena Settings](images/lab3/image4.png)
+  ![Athena Settings](images/lab3/image5.png)
 - Confirm the configuration and return to the query editor by choosing the Editor tab.
 
 #### 5.1.2. Query GDELT EVENTS Data
 
 - Created database: `CREATE DATABASE gdelt;`
-  ![Database Creation](images\lab3\image6.png)
+  ![Database Creation](images/lab3/image6.png)
 
 **Create Metadata Table for GDELT EVENTS Data**
 
 - Created events table: `CREATE EXTERNAL TABLE gdelt.events (...) ROW FORMAT SERDE ... LOCATION 's3://gdelt-open-data/events/';`
 
-![Events Table](images\lab3\image7.png)
+![Events Table](images/lab3/image7.png)
 
 **Create Metadata Table for GDELT EVENTS Data**
 
@@ -365,17 +372,17 @@ This session shows how to query the GDELT dataset (large and public) with Athena
 
   - Download files: [Event codes](https://static.us-east-1.prod.workshops.aws/public/57c3164a-dfbf-4d43-a246-79b2ceb70231/static/CAMEO.eventcodes.txt), [Countries](https://static.us-east-1.prod.workshops.aws/public/57c3164a-dfbf-4d43-a246-79b2ceb70231/static/CAMEO.countries.txt), [Types](https://static.us-east-1.prod.workshops.aws/public/57c3164a-dfbf-4d43-a246-79b2ceb70231/static/CAMEO.types.txt), [Groups](https://static.us-east-1.prod.workshops.aws/public/57c3164a-dfbf-4d43-a246-79b2ceb70231/static/CAMEO.groups.txt)
   - In S3 data lake bucket 's3://sdl-immersion-day-{aws-account-number}', create Folder named 'gdelt', and click Save
-    ![Create S3](images\lab3\image8.png)
+    ![Create S3](images/lab3/image8.png)
   - Uploaded dimension files (eventcodes, countries, types, groups) to S3/gdelt/[folder]/.
 
-  ![S3 Upload](images\lab3\image9.png)
+  ![S3 Upload](images/lab3/image9.png)
 
 - Return to the Amazon Athena console and run the SQL statements below to create dimension tables
   - Created dimension tables for eventcodes, types, groups, countries: e.g., `CREATE EXTERNAL TABLE gdelt.eventcodes (...) LOCATION 's3://sdl-immersion-day-[account]/gdelt/eventcodes/';`
-    ![Dimension Tables](images\lab3\image10.png)
-    ![Dimension Tables](images\lab3\image11.png)
-    ![Dimension Tables](images\lab3\image12.png)
-    ![Dimension Tables](images\lab3\image13.png)
+    ![Dimension Tables](images/lab3/image10.png)
+    ![Dimension Tables](images/lab3/image11.png)
+    ![Dimension Tables](images/lab3/image12.png)
+    ![Dimension Tables](images/lab3/image13.png)
 
 **Query data**
 
@@ -390,7 +397,7 @@ GROUP BY year
 ORDER BY year ASC;
 ```
 
-![Events Query](images\lab3\image14.png)
+![Events Query](images/lab3/image14.png)
 
 - Notice the data amount scanned: In about 30 seconds scanned Amazon Athena over 190GB of data across thousands of uncompressed TSV files over 100s of millions of records in Amazon S3.
 
@@ -410,7 +417,7 @@ SELECT eventcode,
 ORDER BY nb_events DESC;
 ```
 
-![Top Events Query](images\lab3\image15.png)
+![Top Events Query](images/lab3/image15.png)
 
 - Count the number of events per year with Barack Obama
 
@@ -424,7 +431,7 @@ SELECT year,
 ORDER BY year ASC;
 ```
 
-![Obama Events Query](images\lab3\image16.png)
+![Obama Events Query](images/lab3/image16.png)
 
 - Obama/Merkel events per category: Filter/join with threshold.
 
@@ -443,7 +450,7 @@ WHERE nb_events >= 20
 ORDER BY nb_events DESC;
 ```
 
-![Obama Query](images\lab3\image17.png)
+![Obama Query](images/lab3/image17.png)
 
 **Key Learnings:** Athena enables serverless SQL on S3 data (e.g., TSV/CSV) via Glue Catalog, parallelizing queries for seconds-level results on petabytes. External tables map schemas without data duplication; joins across buckets demonstrate unified access.
 
@@ -451,11 +458,11 @@ ORDER BY nb_events DESC;
 
 - Attempted QuickSight setup: Signed up for Enterprise edition, selected region, added S3 buckets (sdl-immersion-day-[account], gdelt-open-data), set account name/email.
 
-![QuickSight Signup](images\lab3\image18.png)
-![QuickSight Signup](images\lab3\image19.png)
-![QuickSight Signup](images\lab3\image20.png)
-![QuickSight Signup](images\lab3\image21.png)
-![QuickSight Signup](images\lab3\image22.png)
+![QuickSight Signup](images/lab3/image18.png)
+![QuickSight Signup](images/lab3/image19.png)
+![QuickSight Signup](images/lab3/image20.png)
+![QuickSight Signup](images/lab3/image21.png)
+![QuickSight Signup](images/lab3/image22.png)
 
 Note: Skipped further steps—dataset import, dashboard creation—as QuickSight requires a paid subscription unavailable in free tier
 
@@ -466,38 +473,38 @@ This part uses JDBC connection to connect Athena with SQL Workbench, enabling Bu
 - Step 1: get IAM credentials
 - Step 2: Download [SQL Workbench](https://www.sql-workbench.eu/)
 - Step 3: Download the [Athena JDBC 3.X driver](https://downloads.athena.us-east-1.amazonaws.com/drivers/JDBC/3.0.0/athena-jdbc-3.0.0-with-dependencies.jar)
-  ![Athena JDBC 3.X driver](images\lab3\image23.jpg)
+  ![Athena JDBC 3.X driver](images/lab3/image23.jpg)
 - Step 4: Open SQL Workbench
   - Dismiss the connection window
-    ![SQL Workbench connection](images\lab3\image24.jpg)
+    ![SQL Workbench connection](images/lab3/image24.jpg)
   - File > Manage drivers
-    ![SQL Workbench connection](images\lab3\image25.png)
+    ![SQL Workbench connection](images/lab3/image25.png)
   - Create Sheet:
     - Athena for the Name
     - the downloaded JAR file for the Library
     - com.amazon.athena.jdbc.AthenaDriver for Classname
     - jdbc:athena://WorkGroup=primary;Region=us-east-1; for Sample URL
     - confirm with OK
-      ![SQL Workbench connection](images\lab3\image26.png)
+      ![SQL Workbench connection](images/lab3/image26.png)
   - File > Connect Window
-    ![SQL Workbench connection](images\lab3\image27.png)
+    ![SQL Workbench connection](images/lab3/image27.png)
   - Create a new connection
     - Athena for the Name
     - Athena for the Driver
     - jdbc:athena://WorkGroup=primary;Region=<YOUR EVENT REGION>; for the URL (replace the region placeholder)
     - Copy AWS Access Key into the Username input
     - Copy AWS Secret Key into the Password input
-      ![SQL Workbench connection](images\lab3\image28.png)
+      ![SQL Workbench connection](images/lab3/image28.png)
     - Choose Extended Properties: Create a new property, call it S3OutputLocation and enter data lake S3 URI with /Athena as prefix
-      ![SQL Workbench connection](images\lab3\image29.png)
+      ![SQL Workbench connection](images/lab3/image29.png)
     - Confirm OK to load database
-      ![SQL Workbench connection](images\lab3\image30.png)
+      ![SQL Workbench connection](images/lab3/image30.png)
   - Tools > Database Explorer
-    ![Database Explorer](images\lab3\image31.png)
+    ![Database Explorer](images/lab3/image31.png)
     - Check database
-      ![Database Explorer](images\lab3\image32.png)
+      ![Database Explorer](images/lab3/image32.png)
     - Review data in sdl-demo-data
-      ![Database Explorer](images\lab3\image33.png)
+      ![Database Explorer](images/lab3/image33.png)
   - Work on database using local reporting and visualization tools
 
 **Key Learnings:** JDBC connectivity enables integration with existing BI tools (Tableau, Power BI, SQL Workbench), extending Athena's reach beyond AWS-native services. This approach allows organizations to leverage current investments in BI infrastructure while accessing cloud-scale analytics. The connection uses standard SQL interfaces, making it familiar to existing database users.
