@@ -222,15 +222,21 @@ After adding Amazon S3 data to Glue catalog, it can easily be queried from servi
   - In the Nodes pane, Target tab, select Amazon S3.
     ![Visual Nodes](images/lab2/image26.png)
   - Configure the node properties:
-    - Select Data Catalog table as S3 source type
-    - Choose sdl-demo-data for Database
-    - Choose raw for Table
-      ![Visual Nodes](images/lab2/image27.png)
-    - For the Format, choose Parquet
-    - For the Compression Type, choose Snappy
-    - For the S3 Target Location, choose the data lake bucket and prefix it with compressed-parquet/, so it looks like s3://sdl-immersion-day-{aws-account-number}/compressed-parquet/
-    - Keep the rest to the defaults
-      ![Visual Nodes](images/lab2/image28.png)
+
+  **In node Source**
+
+  - Select Data Catalog table as S3 source type
+  - Choose sdl-demo-data for Database
+  - Choose raw for Table
+    ![Visual Nodes](images/lab2/image27.png)
+
+  **In node Target**
+
+  - For the Format, choose Parquet
+  - For the Compression Type, choose Snappy
+  - For the S3 Target Location, choose the data lake bucket and prefix it with compressed-parquet/, so it looks like s3://sdl-immersion-day-{aws-account-number}/compressed-parquet/
+  - Keep the rest to the defaults
+    ![Visual Nodes](images/lab2/image28.png)
   - Finally, add some transformation logic:
 
     - Choose the Change Schema node from the Nodes pane.
